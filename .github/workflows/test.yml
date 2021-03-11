@@ -25,8 +25,8 @@ jobs:
 
       - name: Running pyLint
         run: |
-          PYTHONPATH=.src/epython pylint ./src/epython
+          PYTHONPATH=./src/epython pylint ./src/epython
 
       - name: Test with pytest
         run: |
-          PYTHONPATH=.src/epython pytest .
+          PYTHONPATH=./src/epython pytest .
