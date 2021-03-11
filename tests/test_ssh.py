@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
 Description:
-    This module is used for testing the internal ssh utilities used in liqtest
+    This module is used for testing the internal ssh utilities
 
 Author:
     Ray Gomez
@@ -92,7 +92,7 @@ def rsa_key():
 
 @pytest.mark.L1
 @pytest.mark.test_ssh
-def test_liq_ssh_connect_object(rsa_key):
+def test_ssh_connect_object(rsa_key):
     """ Basic test that validates the ssh.SSHConnect class """
 
     host = "localhost"

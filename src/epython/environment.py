@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
 Description:
-    This module contains the environment constructs that are used globally for liqtest.
+    This module contains the environment constructs that are used globally for epython.
 
     NOTE: This module should remain small!
 

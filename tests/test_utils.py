@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
 Description:
-    This module is used for testing the internal utilities used in liqtest
+    This module is used for testing the internal utilities
 
 Author:
     Ray Gomez
