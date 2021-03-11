@@ -36,7 +36,7 @@ class SSHConnect:
     """
 
     def __init__(self, host, username, password, port=22, pkey=None):
-        """ The LiqSSHConnect helper class is used solely to provide a context manager for ssh
+        """ The SSHConnect helper class is used solely to provide a context manager for ssh
         operations.
 
         Args:
@@ -67,15 +67,13 @@ class SSHConnect:
                 self.pkey = paramiko.RSAKey.from_private_key_file(self.pkey_path)
                 _LOG.debug("RSA Key has been selected for use with paramiko")
             except Exception:
-                # NOTE: This is what is being used by the Liqid Dockerization
                 self.pkey = paramiko.ECDSAKey.from_private_key_file(self.pkey_path)
-                _LOG.debug("ECDSA Key (Default for dockerized Liqid) has been selected for use with paramiko")
+                _LOG.debug("ECDSA Key has been selected for use with paramiko")
 
     def __enter__(self):
 
         # Make sure we automatically register the keys
         self.client = paramiko.SSHClient()
-        # self.client.load_system_host_keys()
         self.client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
 
         try:
@@ -98,7 +96,9 @@ class SSHConnect:
 
 
 # Probably need both local and remote checks
-@handlers.basic_retry_handler(SSH_CONN_EXCEPTIONS, retries=EPYTHON_SSH_RETRIES, interval=EPYTHON_SSH_RETRY_INTERVAL)
+@handlers.basic_retry_handler(SSH_CONN_EXCEPTIONS,
+                              retries=EPYTHON_SSH_RETRIES,
+                              interval=EPYTHON_SSH_RETRY_INTERVAL)
 def execute_command(host, username, password, cmd, port=22, pkey=None, banner=False):
     """Execute a given command on a host over ssh.
 
@@ -114,34 +114,34 @@ def execute_command(host, username, password, cmd, port=22, pkey=None, banner=Fa
     Returns:
         (tuple): RC, Standard Out, Standard Error
     """
-    rc = None
+    ret_code = None
 
     with SSHConnect(host, username, password, port=port, pkey=pkey) as client:
         # Execute the command and get the goodies
         _, stdout, stderr = client.exec_command(cmd)
 
         try:
-            rc = stdout.channel.recv_exit_status()
+            ret_code = stdout.channel.recv_exit_status()
         except Exception as exp:
-            _LOG.error(f"Failed to recieve return code due to:\n{exp}")
+            _LOG.error("Failed to recieve return code due to:\n%s", exp)
             raise errors.ssh.SSHError("Failed retrieving RC!")
 
         try:
             stdout = stdout.read().decode().strip()
         except Exception as exp:
-            _LOG.error(f"Failed to read stdout due to:\n{exp}")
+            _LOG.error("Failed to read stdout due to:\n%s", exp)
             raise errors.ssh.SSHStreamDecodeError("Failed decoding stdout stream!")
 
         try:
             stderr = stderr.read().decode().strip()
         except Exception as exp:
-            _LOG.error(f"Failed to read stderr due to:\n{exp}")
+            _LOG.error("Failed to read stderr due to:\n%s", exp)
             raise errors.ssh.SSHStreamDecodeError("Failed decoding stderr stream!")
 
         msg = (f"Results from executed command:\n"
                f"\tHOST: {host}\n"
                f"\tCMD: {cmd}\n"
-               f"\tRC: {rc}\n"
+               f"\tRC: {ret_code}\n"
                f"\tSTDOUT: {stdout}\n"
                f"\tSTDERR: {stderr}")
         if banner:
@@ -149,7 +149,7 @@ def execute_command(host, username, password, cmd, port=22, pkey=None, banner=Fa
         else:
             _LOG.debug(msg)
 
-        return rc, stdout, stderr
+        return ret_code, stdout, stderr
 
 
 def ssh_running(host, port=22):
@@ -163,8 +163,10 @@ def ssh_running(host, port=22):
     try:
         socket.create_connection((host, port), timeout=5)
         return True
-    except Exception as e:
+    # pylint: disable=W0703
+    except Exception:
         return False
+    # pylint: enable=W0703
 
 
 def wait_for_ssh(host, port=22, timeout=300, interval=1):
@@ -176,10 +178,10 @@ def wait_for_ssh(host, port=22, timeout=300, interval=1):
         timeout (int): The time to wait for SSH to become available in seconds (Default: 300)
         interval (int): The time to sleep between checks in seconds (Default: 1)
     """
-    _LOG.info(f"Waiting for SSH to become available on {host} at port: {port}")
+    _LOG.info("Waiting for SSH to become available on %s at port: %s", host, port)
     start_time = time.time()
     while not ssh_running(host, port=port):
         if time.time() - start_time > timeout:
             raise errors.ssh.SSHTimeoutError(f"Timed out waiting for ssh to '{host}' on port '{port}'")
         time.sleep(interval)
-    _LOG.info(f"SSH is available on {host} at port: {port}")
+    _LOG.info("SSH is available on %s at port: %s", host, port)

@@ -9,14 +9,10 @@ Author:
 Date:
     12/7/20
 """
-import socket
+
 import time
-
-import requests
-
 from abc import ABC, abstractmethod
 
-import errors
 from environment import _LOG
 
 #########################################################################################################
@@ -96,12 +92,12 @@ def basic_retry_handler(exceptions, retries=3, interval=30, callback=None):
                     return return_val
 
                 # Catch any exceptions provided by the user
-                except exceptions as e:
-                    _LOG.error(f"Function '{func}' failed to execute due to:\n{e}")
+                except exceptions as exp:
+                    _LOG.error("Function '%s' failed to execute due to:\n%s", func, exp)
 
                     # Run the appropriate callback if there is one
                     if callback and isinstance(callback, CallbackHandler):
-                        callback.run_after_exception(e)
+                        callback.run_after_exception(exp)
 
                     # When no more retries are left, raise the last hit exception
                     if f_retries == 1:
@@ -109,8 +105,8 @@ def basic_retry_handler(exceptions, retries=3, interval=30, callback=None):
 
                 # Decrement and wait for the interval before trying again
                 f_retries -= 1
-                _LOG.debug(f"Waiting for {interval} seconds and then retrying up to {f_retries} more "
-                           f"times... ")
+                _LOG.debug("Waiting for %s seconds and then retrying up to %s more "
+                           "times...", interval, f_retries)
                 time.sleep(f_interval)
 
         return wrapper

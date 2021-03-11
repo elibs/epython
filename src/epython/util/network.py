@@ -28,7 +28,7 @@ def wait_for_http(url, status_code=200, interval=1, timeout=90):
         interval (int): The interval between retries in seconds (Default: 1)
     """
 
-    _LOG.info(f"Waiting for url: {url} to return status code: {status_code}")
+    _LOG.info("Waiting for url: %s to return status code: %s", url, status_code)
     start_time = time.time()
     while True:
         # Ignore connection issues
@@ -36,8 +36,10 @@ def wait_for_http(url, status_code=200, interval=1, timeout=90):
             rsp = requests.get(url)
             if rsp.status_code == status_code:
                 return
+        # pylint: disable=W0703
         except Exception:
             pass
+        # pylint: enable=W0703
 
         if time.time() - start_time > timeout:
             break
@@ -64,8 +66,9 @@ def is_port_listening(host, port, wait_interval=2):
         result = sock.connect_ex((host, port))
         if result == 0:
             return True
-        else:
-            return False
-    except:
+        return False
+    # pylint: disable=W0703
+    except Exception:
         sock.close()
         return False
+    # pylint: enable=W0703
