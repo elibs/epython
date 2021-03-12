@@ -4,7 +4,7 @@ __pycache__/
 *$py.class
 
 # Test stuffs
-.pytest_cache/
+.pytest_cache
 
 # pycharm
 .idea/
@@ -13,6 +13,7 @@ __pycache__/
 *.so
 
 # Distribution / packaging
+epython.egg-info/
 .Python
 build/
 develop-eggs/

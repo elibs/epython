@@ -18,7 +18,7 @@ import pytest
 import environment
 import errors
 
-from util import ssh
+import ssh
 
 
 @pytest.fixture(scope="function")
@@ -200,7 +200,7 @@ def test_error_on_stdout_decode(ssh_zero_retry):
     cmd = "ls"
     rc = 0
 
-    with patch("util.ssh.SSHConnect") as mock_ssh:
+    with patch("ssh.SSHConnect") as mock_ssh:
 
         stdout = MagicMock()
         stderr = MagicMock()
@@ -235,7 +235,7 @@ def test_error_on_stderr_decode(ssh_zero_retry):
     cmd = "ls"
     rc = 0
 
-    with patch("util.ssh.SSHConnect") as mock_ssh:
+    with patch("ssh.SSHConnect") as mock_ssh:
 
         stdout = MagicMock()
         stderr = MagicMock()
@@ -271,7 +271,7 @@ def test_error_during_rc_acquisition(ssh_zero_retry):
     cmd = "ls"
     rc = 0
 
-    with patch("util.ssh.SSHConnect") as mock_ssh:
+    with patch("ssh.SSHConnect") as mock_ssh:
         stdout = MagicMock()
         stderr = MagicMock()
         stdout.channel.recv_exit_status.side_effect = Exception("Bogus SSH Error")
@@ -304,7 +304,7 @@ def test_execute_command(ssh_zero_retry):
     cmd = "ls"
     rc = 0
 
-    with patch("util.ssh.SSHConnect") as mock_ssh:
+    with patch("ssh.SSHConnect") as mock_ssh:
 
         stdout = MagicMock()
         stdout.channel.recv_exit_status.return_value = rc
@@ -325,7 +325,7 @@ def test_execute_command(ssh_zero_retry):
 
 @pytest.mark.L1
 @pytest.mark.test_ssh
-@patch('util.ssh.socket.create_connection')
+@patch('ssh.socket.create_connection')
 def test_ssh_running(mock_create_connection):
     """ Test the wait for ssh running helper method """
 
@@ -342,7 +342,7 @@ def test_ssh_running(mock_create_connection):
 
 @pytest.mark.L1
 @pytest.mark.test_ssh
-@patch('util.ssh.ssh_running')
+@patch('ssh.ssh_running')
 def test_wait_for_ssh(mock_ssh_running):
     """ Test the wait for ssh helper method """
 

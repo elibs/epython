@@ -15,7 +15,7 @@ from unittest.mock import Mock
 import pytest
 
 from errors.ssh import SSHError
-from util.handlers import basic_retry_handler, CallbackHandler
+from handlers import basic_retry_handler, CallbackHandler
 
 
 class DummyCallbackHandler(CallbackHandler):

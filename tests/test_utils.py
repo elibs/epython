@@ -9,16 +9,15 @@ Author:
 Date:
     01/5/20
 """
-from unittest.mock import MagicMock, Mock, patch
+from unittest.mock import patch
 import pytest
 
 import errors
-from environment import _LOG
-from util import network
+import network
 
 
 @pytest.mark.L1
-@patch('util.network.requests.get')
+@patch('network.requests.get')
 def test_wait_for_http(mock_get):
     """ Test the wait_for_http helper method. """
 
