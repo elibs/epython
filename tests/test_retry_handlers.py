@@ -10,9 +10,11 @@ Date:
     12/8/20
 """
 
-from unittest.mock import Mock
+from unittest.mock import MagicMock, Mock, patch
 
 import pytest
+
+import poke
 
 from errors.ssh import SSHError
 from handlers import basic_retry_handler, CallbackHandler
@@ -152,3 +154,54 @@ def test_exception_callback():
     assert test_callback.run_after_exception.call_count == retries, "The exception callback count " \
                                                                     "does not equal the number of " \
                                                                     "retries"
+
+
+@pytest.mark.L1
+@pytest.mark.test_requests_handler
+@pytest.mark.parametrize("test_exception", poke.COMMON_REQUEST_EXCEPTIONS)
+def test_requests_retry_handler(test_exception):
+    """Test the basic retry handler without a callback handler to make sure it behaves as expected.
+
+    Args:
+        test_exception (parameter): The type of exception to raise
+
+    Steps:
+        1) Create a mocked function
+        2) Decorate the mocked function that has an ConnectionError side effect with the basic retry
+           handler that retries on ConnectionError
+        3) Validate that the wrapped function fails with an ConnectionError exception
+        4) Validate that the wrapped function was called the same number of times the decorator had
+           retries for
+    """
+
+    # Test URL
+    test_url = "http://test.test.test"
+
+    # Need something > 0 to validate the retry mechanism is working
+    retries = 3
+
+    # We don't need to wait before retrying for this test
+    interval = 0
+
+    # Test GET, POST, PUT, DELETE
+    with patch("poke.eprequests.requests") as patched_requests:
+        patched_requests.get = MagicMock(side_effect=test_exception())
+        patched_requests.post = MagicMock(side_effect=test_exception())
+        patched_requests.put = MagicMock(side_effect=test_exception())
+        patched_requests.delete = MagicMock(side_effect=test_exception())
+
+        with pytest.raises(test_exception):
+            poke.get(test_url, retries=retries, interval=interval)
+        assert patched_requests.get.call_count == retries
+
+        with pytest.raises(test_exception):
+            poke.post(test_url, retries=retries, interval=interval)
+        assert patched_requests.get.call_count == retries
+
+        with pytest.raises(test_exception):
+            poke.put(test_url, retries=retries, interval=interval)
+        assert patched_requests.get.call_count == retries
+
+        with pytest.raises(test_exception):
+            poke.delete(test_url, retries=retries, interval=interval)
+        assert patched_requests.get.call_count == retries

@@ -12,6 +12,7 @@ requests >= 2.25.0
 
 # Development requirements
 
+bumpver >= 2021.1109
 pylint >= 2.6.0
 pytest >= 6.1.2
 pytest-cov >= 2.10.1

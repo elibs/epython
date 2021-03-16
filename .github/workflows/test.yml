@@ -29,4 +29,9 @@ jobs:
 
       - name: Test with pytest
         run: |
-          PYTHONPATH=./src/epython pytest .
+          PYTHONPATH=./src/epython pytest . --junitxml=junit/test-results.xml --cov=com --cov-report=xml --cov-report=html
+      - name: Upload pytest results
+        uses: actions/upload-artifact@v2
+        with:
+          name: pytest-results-${{ matrix.python-version }}
+          path: junit/test-results-${{ matrix.python-version }}.xml
