@@ -31,6 +31,8 @@ EPYTHON_SSH_RETRY_INTERVAL = os.getenv("EPYTHON_SSH_RETRY_INTERVAL") or 5
 # Request Components                                                                                    #
 #########################################################################################################
 EPYTHON_REQUEST_ID = os.getenv("EPYTHON_REQUEST_ID", "epython-poke")
+EPYTHON_REQUEST_INTERVAL = os.getenv("EPYTHON_REQUEST_INTERVAL") or 5
+EPYTHON_REQUEST_RETRIES = os.getenv("EPYTHON_REQUEST_RETRIES") or 5
 
 #########################################################################################################
 # SSH Components                                                                                        #

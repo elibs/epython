@@ -12,7 +12,7 @@ Date:
 
 import requests
 
-from environment import EPYTHON_REQUEST_ID
+from environment import EPYTHON_REQUEST_ID, EPYTHON_REQUEST_RETRIES, EPYTHON_REQUEST_INTERVAL
 from handlers import basic_retry_handler
 
 POKE_HEADERS = {
@@ -32,7 +32,7 @@ COMMON_REQUEST_EXCEPTIONS = (requests.exceptions.RequestException,
 
 
 def get(url, params=None, data=None, auth=None, headers=None, timeout=None,
-        verify=None, retries=3, interval=5, **kwargs):
+        verify=None, retries=EPYTHON_REQUEST_RETRIES, interval=EPYTHON_REQUEST_INTERVAL, **kwargs):
     """ Issue an HTTP GET request
 
     Args:
@@ -60,7 +60,7 @@ def get(url, params=None, data=None, auth=None, headers=None, timeout=None,
 
 
 def put(url, params=None, data=None, auth=None, headers=None, timeout=None,
-        verify=None, retries=3, interval=5, **kwargs):
+        verify=None, retries=EPYTHON_REQUEST_RETRIES, interval=EPYTHON_REQUEST_INTERVAL, **kwargs):
     """ Issue an HTTP PUT request
 
     Args:
@@ -89,7 +89,7 @@ def put(url, params=None, data=None, auth=None, headers=None, timeout=None,
 
 
 def post(url, params=None, data=None, auth=None, headers=None, timeout=None,
-         verify=None, retries=3, interval=5, **kwargs):
+         verify=None, retries=EPYTHON_REQUEST_RETRIES, interval=EPYTHON_REQUEST_INTERVAL, **kwargs):
     """ Issue an HTTP POST request
 
     Args:
@@ -118,7 +118,7 @@ def post(url, params=None, data=None, auth=None, headers=None, timeout=None,
 
 
 def delete(url, params=None, data=None, auth=None, headers=None, timeout=None,
-           verify=None, retries=3, interval=5, **kwargs):
+           verify=None, retries=EPYTHON_REQUEST_RETRIES, interval=EPYTHON_REQUEST_INTERVAL, **kwargs):
     """ Issue an HTTP DELETE request
 
     Args:
