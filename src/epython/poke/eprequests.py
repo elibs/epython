@@ -83,8 +83,8 @@ def put(url, params=None, data=None, auth=None, headers=None, timeout=None,
 
     @basic_retry_handler(COMMON_REQUEST_EXCEPTIONS, retries=retries, interval=interval)
     def __req():
-         return requests.put(url, params=params, data=data, auth=auth, headers=headers, timeout=timeout,
-                             verify=verify, **kwargs)
+        return requests.put(url, params=params, data=data, auth=auth, headers=headers, timeout=timeout,
+                            verify=verify, **kwargs)
     return __req()
 
 
@@ -141,6 +141,6 @@ def delete(url, params=None, data=None, auth=None, headers=None, timeout=None,
 
     @basic_retry_handler(COMMON_REQUEST_EXCEPTIONS, retries=retries, interval=interval)
     def __req():
-        return requests.delete(url, params=params, data=data, auth=auth, headers=headers, timeout=timeout,
-                               verify=verify, **kwargs)
+        return requests.delete(url, params=params, data=data, auth=auth, headers=headers,
+                               timeout=timeout, verify=verify, **kwargs)
     return __req()

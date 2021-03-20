@@ -21,10 +21,12 @@ class PokeResponse(Response):
     """ A subclassed version of requests.Response, wrapped to help with ease of use."""
 
     def __init__(self, response):
+        # Make sure parent is initialized
+        super().__init__()
 
         # Hacky way to copy the response values
-        for k, v in response.__dict__.items():
-            self.__dict__[k] = v
+        for key, val in response.__dict__.items():
+            self.__dict__[key] = val
 
 ##############################################################
 # Generic mechanism that allows easy validation of api calls #
