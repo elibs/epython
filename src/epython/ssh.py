@@ -16,8 +16,7 @@ import time
 
 import paramiko
 
-import errors
-
+from epython import errors
 from epython.environment import _LOG, EPYTHON_SSH_RETRIES, EPYTHON_SSH_RETRY_INTERVAL
 from epython import handlers
 
