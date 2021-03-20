@@ -10,7 +10,7 @@ Date:
     3/11/21
 """
 
-from errors.base import EPythonException
+from epython.errors.base import EPythonException
 
 
 class EPythonUtilException(EPythonException):

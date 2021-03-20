@@ -14,8 +14,8 @@ import time
 
 import requests
 
-import errors
-from environment import _LOG
+from epython import errors
+from epython.environment import _LOG
 
 
 def wait_for_http(url, status_code=200, interval=1, timeout=90):

@@ -13,7 +13,7 @@ Date:
 import time
 from abc import ABC, abstractmethod
 
-from environment import _LOG
+from epython.environment import _LOG
 
 #########################################################################################################
 # CallbackHandler                                                                                       #

@@ -10,4 +10,4 @@ Date:
     3/16/21
 """
 
-from poke.eprequests import get, post, put, delete, COMMON_REQUEST_EXCEPTIONS, POKE_HEADERS
+from epython.poke.eprequests import get, post, put, delete, COMMON_REQUEST_EXCEPTIONS, POKE_HEADERS

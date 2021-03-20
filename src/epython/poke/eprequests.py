@@ -12,8 +12,8 @@ Date:
 
 import requests
 
-from environment import EPYTHON_REQUEST_ID, EPYTHON_REQUEST_RETRIES, EPYTHON_REQUEST_INTERVAL
-from handlers import basic_retry_handler
+from epython.environment import EPYTHON_REQUEST_ID, EPYTHON_REQUEST_RETRIES, EPYTHON_REQUEST_INTERVAL
+from epython.handlers import basic_retry_handler
 
 POKE_HEADERS = {
     "Content-Type": "application/json",
