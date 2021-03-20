@@ -16,10 +16,9 @@ import time
 
 import paramiko
 
-import errors
-
-from environment import _LOG, EPYTHON_SSH_RETRIES, EPYTHON_SSH_RETRY_INTERVAL
-import handlers
+from epython import errors
+from epython.environment import _LOG, EPYTHON_SSH_RETRIES, EPYTHON_SSH_RETRY_INTERVAL
+from epython import handlers
 
 # The base list of exceptions to retry on
 # (NOTE: This is meant to only handle connection-related errors, not authentication issues)

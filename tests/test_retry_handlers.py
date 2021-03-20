@@ -14,10 +14,10 @@ from unittest.mock import MagicMock, Mock, patch
 
 import pytest
 
-import poke
+from epython import poke
 
-from errors.ssh import SSHError
-from handlers import basic_retry_handler, CallbackHandler
+from epython.errors.ssh import SSHError
+from epython.handlers import basic_retry_handler, CallbackHandler
 
 
 class DummyCallbackHandler(CallbackHandler):
@@ -184,7 +184,7 @@ def test_requests_retry_handler(test_exception):
     interval = 0
 
     # Test GET, POST, PUT, DELETE
-    with patch("poke.eprequests.requests") as patched_requests:
+    with patch("epython.poke.eprequests.requests") as patched_requests:
         patched_requests.get = MagicMock(side_effect=test_exception())
         patched_requests.post = MagicMock(side_effect=test_exception())
         patched_requests.put = MagicMock(side_effect=test_exception())

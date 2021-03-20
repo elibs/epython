@@ -12,12 +12,12 @@ Date:
 from unittest.mock import patch
 import pytest
 
-import errors
-import network
+from epython import errors
+from epython import network
 
 
 @pytest.mark.L1
-@patch('network.requests.get')
+@patch('epython.network.requests.get')
 def test_wait_for_http(mock_get):
     """ Test the wait_for_http helper method. """
 

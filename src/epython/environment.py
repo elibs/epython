@@ -13,7 +13,7 @@ Date:
 """
 import os
 
-from logger import setup_logging
+from epython.logger import setup_logging
 
 #########################################################################################################
 # Environmental overrides                                                                               #

@@ -10,7 +10,7 @@ Date:
     12/7/20
 """
 
-from errors.base import EPythonException
+from epython.errors.base import EPythonException
 
 
 class SSHError(EPythonException):

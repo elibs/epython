@@ -16,7 +16,7 @@ import logging
 logging.getLogger("paramiko.transport").setLevel(logging.ERROR)
 
 
-def setup_logging(name="root", log_level=logging.INFO, log_file=None):
+def setup_logging(name="epython", log_level=logging.INFO, log_file=None):
     """Get the basic root logger."""
 
     # Define the logging format

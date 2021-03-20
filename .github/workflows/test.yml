@@ -25,13 +25,13 @@ jobs:
 
       - name: Running pyLint
         run: |
-          PYTHONPATH=./src/epython pylint ./src/epython
+          PYTHONPATH=./src/ pylint ./src/epython
 
       - name: Test with pytest
         run: |
-          PYTHONPATH=./src/epython pytest . --junitxml=junit/test-results.xml --cov=com --cov-report=xml --cov-report=html
+          PYTHONPATH=./src pytest . --junitxml=junit/test-results.xml --cov=com --cov-report=xml --cov-report=html
       - name: Upload pytest results
         uses: actions/upload-artifact@v2
         with:
           name: pytest-results-${{ matrix.python-version }}
-          path: junit/test-results-${{ matrix.python-version }}.xml
+          path: junit/test-results.xml
