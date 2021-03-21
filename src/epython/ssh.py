@@ -152,6 +152,29 @@ def execute_command(host, username, password, cmd, port=22, pkey=None, banner=Fa
         return ret_code, stdout, stderr
 
 
+def remote_file_exists(host, username, password, remote_file_path, port=22, pkey=None):
+    """ Check to see if a remote file exists
+
+    Args:
+        host (str): The ip or FQDN of the host to check file existence on
+        username (str): The username for the host
+        password (str): The password for the username
+        remote_file_path (str): The remote file to check exists
+        port (int): The port to scp over
+        pkey (str): The path to the ssh key to use
+
+    Returns:
+        (bool): Whether or not the file exists
+    """
+
+    cmd = f"[[ -e {remote_file_path} ]]"
+    rc, out, err = execute_command(host, username, password, cmd, pkey=pkey)
+    if rc != 0:
+        _LOG.debug(f"Log {remote_file_path} doesn't exist, skipping...")
+        return False
+    return True
+
+
 def get(host, username, password, remote_file, local_path, port=22, pkey=None):
     """ SCP a remote file to a local file
 

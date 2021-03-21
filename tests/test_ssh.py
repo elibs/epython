@@ -358,7 +358,6 @@ def test_wait_for_ssh(mock_ssh_running):
         ssh.wait_for_ssh(fqdn, timeout=.1, interval=0)
 
 
-@pytest.mark.wip
 @pytest.mark.L1
 @pytest.mark.test_ssh
 def test_ssh_scp():
@@ -416,3 +415,41 @@ def test_ssh_scp():
 
             # Make sure test value is propogated
             assert val == mock_return_val
+
+
+@pytest.mark.wip
+@pytest.mark.L1
+@pytest.mark.test_ssh
+def test_remote_file_exists(ssh_zero_retry):
+    """ Basic test that validates the ssh execution
+
+    Args:
+        ssh_zero_retry (None): Fixture that provides setting the ssh retries to 0
+
+    Steps:
+        1) Mock SSH Class
+        2) Mock the return values from paramiko
+        3) Validate execute_command calls the proper sanitizing methods
+        4) Validate execute_command provides the correct values
+    """
+
+    host = "localhost"
+    username = "bogus_user"
+    password = "bogus_pass"
+    test_remote_file = "TestBogusRemoteFile"
+    expected_cmd = f"[[ -e {test_remote_file} ]]"
+
+    cmd = "ls"
+    happy_path_rc = 0
+    negative_path_rc = 1
+
+    with patch("epython.ssh.execute_command") as mock_execute:
+        # Test happy path
+        mock_execute.return_value = happy_path_rc, "Bogus STDOUT", "Bogus STDERR"
+        assert ssh.remote_file_exists(host, username, password, test_remote_file)
+        mock_execute.assert_called_with(host, username, password, expected_cmd, pkey=None)
+
+        # Test negative path
+        mock_execute.return_value = negative_path_rc, "Bogus STDOUT", "Bogus STDERR"
+        assert not ssh.remote_file_exists(host, username, password, test_remote_file)
+        mock_execute.assert_called_with(host, username, password, expected_cmd, pkey=None)
