@@ -285,7 +285,7 @@ def test_error_during_rc_acquisition(ssh_zero_retry):
 @pytest.mark.L1
 @pytest.mark.test_ssh
 def test_execute_command(ssh_zero_retry):
-    """ Basic test that validates the proper error occurs when a missing ssh key is passed in.
+    """ Basic test that validates the ssh execution
 
     Args:
         ssh_zero_retry (None): Fixture that provides setting the ssh retries to 0
@@ -356,3 +356,63 @@ def test_wait_for_ssh(mock_ssh_running):
     mock_ssh_running.return_value = False
     with pytest.raises(errors.ssh.SSHTimeoutError):
         ssh.wait_for_ssh(fqdn, timeout=.1, interval=0)
+
+
+@pytest.mark.wip
+@pytest.mark.L1
+@pytest.mark.test_ssh
+def test_ssh_scp():
+    """ Test the ssh scp methods
+
+    NOTE: this test doesn't need to do much as this functionality is just a wrapper around the most
+          common behavior that should already be tested by upstream.
+    """
+
+    host = "localhost"
+    username = "bogus_user"
+    password = "bogus_pass"
+
+    # Test the get functionality
+    with patch("epython.ssh.SSHConnect") as mock_ssh:
+        with patch("epython.ssh.SCPClient") as mock_scp:
+
+            remote_file = "bogus_remote_file"
+            local_path = "bogus_local_path"
+
+            mock_return_val = "Test"
+            mock_get = MagicMock(return_value=mock_return_val)
+            mock_scp.return_value.__enter__.return_value.get = mock_get
+
+            # Test begins
+            val = ssh.get(host, username, password, remote_file, local_path)
+
+            # Make sure scp's get function was called
+            assert mock_get.call_count == 1
+
+            # Make sure we are only opening SSH context once
+            assert mock_ssh.call_count == 1
+
+            # Make sure test value is propogated
+            assert val == mock_return_val
+
+    # Test the put functionality
+    with patch("epython.ssh.SSHConnect") as mock_ssh:
+        with patch("epython.ssh.SCPClient") as mock_scp:
+
+            local_file = "bogus_file"
+            remote_path = "remote_path"
+            mock_return_val = "Test"
+            mock_put = MagicMock(return_value=mock_return_val)
+            mock_scp.return_value.__enter__.return_value.put = mock_put
+
+            # Test begins
+            val = ssh.put(host, username, password, local_file, remote_path)
+
+            # Make sure scp's put function was called
+            assert mock_put.call_count == 1
+
+            # Make sure we are only opening SSH context once
+            assert mock_ssh.call_count == 1
+
+            # Make sure test value is propogated
+            assert val == mock_return_val

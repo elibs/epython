@@ -9,6 +9,7 @@
 
 paramiko >= 2.7.2
 requests >= 2.25.0
+scp >= 0.13.3
 
 # Development requirements
 
