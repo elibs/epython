@@ -195,7 +195,7 @@ def get(host, username, password, remote_file, local_path, port=22, pkey=None):
 
 
 def put(host, username, password, local_file, remote_path=b'.', port=22, pkey=None):
-    """ SCP a remote file to a local file
+    """ SCP a local file to a remote file
 
     Args:
         host (str): The ip or FQDN of the host to retrieve file from
