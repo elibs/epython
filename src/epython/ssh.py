@@ -152,7 +152,7 @@ def execute_command(host, username, password, cmd, port=22, pkey=None, banner=Fa
         return ret_code, stdout, stderr
 
 
-def get(host, username, password, remote_file, local_file, port=22, pkey=None):
+def get(host, username, password, remote_file, local_path, port=22, pkey=None):
     """ SCP a remote file to a local file
 
     Args:
@@ -160,7 +160,7 @@ def get(host, username, password, remote_file, local_file, port=22, pkey=None):
         username (str): The username for the host
         password (str): The password for the username
         remote_file (str): The remote file to retrieve
-        local_file (str): The remote file's local filename
+        local_path (str): The local dir to store the remote file
         port (int): The port to scp over
         pkey (str): The path to the ssh key to use
     """
@@ -168,7 +168,7 @@ def get(host, username, password, remote_file, local_file, port=22, pkey=None):
     with SSHConnect(host, username, password, port=port, pkey=pkey) as client:
         with SCPClient(client.get_transport()) as scp:
             _LOG.debug("Extablished scp session")
-            return scp.get(remote_file, local_path=local_file)
+            return scp.get(remote_file, local_path=local_path)
 
 
 def put(host, username, password, local_file, remote_path=b'.', port=22, pkey=None):
