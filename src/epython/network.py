@@ -118,7 +118,6 @@ def wait_for_port_state(host, port, state, max_wait=300, check_interval=10):
             if is_port_listening(host, port):
                 _LOG.debug(f"Host '{host}' is listening on port '{port}', moving on...")
                 return
-
             _LOG.debug(f"Host '{host}' is not listening on port '{port}', "
                        f"waiting {check_interval}s before trying again...")
         else:

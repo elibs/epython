@@ -417,7 +417,6 @@ def test_ssh_scp():
             assert val == mock_return_val
 
 
-@pytest.mark.wip
 @pytest.mark.L1
 @pytest.mark.test_ssh
 def test_remote_file_exists(ssh_zero_retry):
