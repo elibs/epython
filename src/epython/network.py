@@ -72,3 +72,47 @@ def is_port_listening(host, port, wait_interval=2):
         sock.close()
         return False
     # pylint: enable=W0703
+
+
+def wait_for_port_up(host, port, max_wait=300, check_interval=10):
+    """ Wait for a specified port to be up (listening)
+
+    Args:
+        host (str): The FQDN or the IP address of the system in question
+        port (int): The port to check
+        max_wait (int): The maximum amount of time to wait for a port to have connectivity
+        check_interval (int): The interval to wait before determining a port is down
+    """
+
+    start_time = time.time()
+    while time.time() - start_time < max_wait:
+        if is_port_listening(host, port):
+            _LOG.debug(f"Host '{host}' is listening on port '{port}', moving on...")
+            return
+        _LOG.debug(f"Host '{host}' is not listening on port '{port}', "
+                   f"waiting {check_interval}s before trying again...")
+        time.sleep(check_interval)
+    raise errors.network.EConnectivityException(f"Port {port} on host {host} failed to reach a listening "
+                                                f"state in {max_wait} seconds.")
+
+
+def wait_for_port_down(host, port, max_wait=300, check_interval=10):
+    """ Wait for a specified port to not be listening (down)
+
+    Args:
+        host (str): The FQDN or the IP address of the system in question
+        port (int): The port to check
+        max_wait (int): The maximum amount of time to wait for a port to have connectivity
+        check_interval (int): The interval to wait before determining a port is down
+    """
+
+    start_time = time.time()
+    while time.time() - start_time < max_wait:
+        if not is_port_listening(host, port):
+            _LOG.debug(f"Host '{host}' is no longer listening on port '{port}', moving on...")
+            return
+        _LOG.debug(f"Host '{host}' is still listening on port '{port}', "
+                   f"waiting {check_interval}s before trying again...")
+        time.sleep(check_interval)
+    raise errors.network.EConnectivityException(f"Port '{port}' on host '{host}' failed to reach a down "
+                                                f"state in '{max_wait}' seconds.")

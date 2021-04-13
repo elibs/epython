@@ -15,6 +15,7 @@ import socket
 import time
 
 import paramiko
+from scp import SCPClient
 
 from epython import errors
 from epython.environment import _LOG, EPYTHON_SSH_RETRIES, EPYTHON_SSH_RETRY_INTERVAL
@@ -149,6 +150,67 @@ def execute_command(host, username, password, cmd, port=22, pkey=None, banner=Fa
             _LOG.debug(msg)
 
         return ret_code, stdout, stderr
+
+
+def remote_file_exists(host, username, password, remote_file_path, port=22, pkey=None):
+    """ Check to see if a remote file exists
+
+    Args:
+        host (str): The ip or FQDN of the host to check file existence on
+        username (str): The username for the host
+        password (str): The password for the username
+        remote_file_path (str): The remote file to check exists
+        port (int): The port to scp over
+        pkey (str): The path to the ssh key to use
+
+    Returns:
+        (bool): Whether or not the file exists
+    """
+
+    cmd = f"[[ -e {remote_file_path} ]]"
+    rc, out, err = execute_command(host, username, password, cmd, pkey=pkey)
+    if rc != 0:
+        _LOG.debug(f"Log {remote_file_path} doesn't exist, skipping...")
+        return False
+    return True
+
+
+def get(host, username, password, remote_file, local_path, port=22, pkey=None):
+    """ SCP a remote file to a local file
+
+    Args:
+        host (str): The ip or FQDN of the host to retrieve file from
+        username (str): The username for the host
+        password (str): The password for the username
+        remote_file (str): The remote file to retrieve
+        local_path (str): The local dir to store the remote file
+        port (int): The port to scp over
+        pkey (str): The path to the ssh key to use
+    """
+
+    with SSHConnect(host, username, password, port=port, pkey=pkey) as client:
+        with SCPClient(client.get_transport()) as scp:
+            _LOG.debug("Extablished scp session")
+            return scp.get(remote_file, local_path=local_path)
+
+
+def put(host, username, password, local_file, remote_path=b'.', port=22, pkey=None):
+    """ SCP a local file to a remote file
+
+    Args:
+        host (str): The ip or FQDN of the host to retrieve file from
+        username (str): The username for the host
+        password (str): The password for the username
+        local_file (str): The remote file's local filename
+        remote_path (str): The remote path to put the file into (default: .)
+        port (int): The port to scp over
+        pkey (str): The path to the ssh key to use
+    """
+
+    with SSHConnect(host, username, password, port=port, pkey=pkey) as client:
+        with SCPClient(client.get_transport()) as scp:
+            _LOG.debug("Extablished scp session")
+            return scp.put(local_file, remote_path)
 
 
 def ssh_running(host, port=22):
