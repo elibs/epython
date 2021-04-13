@@ -18,7 +18,7 @@ from epython import network
 
 @pytest.mark.L1
 @patch('epython.network.requests.get')
-def test_wait_for_http(mock_get):
+def test_wait_for_http_status_code(mock_get):
     """ Test the wait_for_http helper method. """
 
     url = "http://BogusURL"
@@ -27,18 +27,18 @@ def test_wait_for_http(mock_get):
     # Setup mock to test happy path
     mock_get.return_value.status_code = status_code
 
-    network.wait_for_http(url, status_code=status_code, interval=0, timeout=5)
+    network.wait_for_http_status_code(url, status_code=status_code, interval=0, timeout=5)
     assert mock_get.call_count == 1
 
     # Setup mock to test bad status code
     mock_get.return_value.status_code = status_code + 1
     with pytest.raises(errors.util.EPythonUtilException):
-        network.wait_for_http(url, status_code=status_code, interval=0, timeout=.1)
+        network.wait_for_http_status_code(url, status_code=status_code, interval=0, timeout=.1)
 
     # Setup mock to test requests exception
     mock_get.side_effect = Exception("Mocked Request Exception!")
     with pytest.raises(errors.util.EPythonUtilException):
-        network.wait_for_http(url, status_code=status_code, interval=0, timeout=.1)
+        network.wait_for_http_status_code(url, status_code=status_code, interval=0, timeout=.1)
 
 
 @pytest.mark.L1

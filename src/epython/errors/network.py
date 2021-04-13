@@ -14,4 +14,8 @@ from epython.errors.base import EPythonException
 
 
 class EConnectivityException(EPythonException):
-    """ Base filter exception. """
+    """ Connectivity exception. """
+
+
+class EInvalidPortState(EPythonException):
+    """ Invalid port state exception. """
