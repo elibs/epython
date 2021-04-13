@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
 Description:
-    This module is used for testing the internal utilities
+    This module is used for testing the internal network module
 
 Author:
     Ray Gomez
@@ -39,3 +39,18 @@ def test_wait_for_http(mock_get):
     mock_get.side_effect = Exception("Mocked Request Exception!")
     with pytest.raises(errors.util.EPythonUtilException):
         network.wait_for_http(url, status_code=status_code, interval=0, timeout=.1)
+
+
+@pytest.mark.L1
+def test_is_port_listening():
+    pass
+
+
+@pytest.mark.L1
+def test_wait_for_port_up():
+    pass
+
+
+@pytest.mark.L1
+def test_wait_for_port_down():
+    pass
