@@ -41,7 +41,6 @@ def test_wait_for_http_status_code(mock_get):
         network.wait_for_http_status_code(url, status_code=status_code, interval=0, timeout=.1)
 
 
-@pytest.mark.wip
 @pytest.mark.L1
 @patch('epython.network.socket.socket.connect_ex')
 def test_is_port_listening(mock_connect_ex):
@@ -67,7 +66,6 @@ def test_is_port_listening(mock_connect_ex):
     assert not network.is_port_listening(host, port, wait_interval=0)
 
 
-@pytest.mark.wip
 @pytest.mark.L1
 @patch('epython.network.is_port_listening')
 def test_wait_for_port_state(mock_port_listening):
