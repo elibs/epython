@@ -37,7 +37,6 @@ jobs:
           git config --global user.name "Autobot"
           bumpver update
 
-
   publish:
     name: Build and publish Python 🐍 distributions 📦 to PyPI and TestPyPI
     runs-on: ubuntu-20.04
