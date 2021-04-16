@@ -15,6 +15,9 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
+        with:
+          token: ${{ secrets.EPYTHON_PAT }}
+
       - uses: actions/setup-python@v2
         with:
           python-version: ${{ matrix.python-version }}
@@ -32,12 +35,6 @@ jobs:
           git config --global user.email "autobot@users.noreply.github.com"
           git config --global user.name "Autobot"
           bumpver update
-
-      - name: Push changes
-        uses: ad-m/github-push-action@master
-        with:
-          github_token: ${{ secrets.EPYTHON_PAT }}
-          branch: ${{ github.ref }}
 
   build-n-publish:
     name: Build and publish Python 🐍 distributions 📦 to PyPI and TestPyPI
