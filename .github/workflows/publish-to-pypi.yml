@@ -36,6 +36,7 @@ jobs:
           git config --global user.email "autobot@users.noreply.github.com"
           git config --global user.name "Autobot"
           bumpver update
+          git push
 
   publish:
     name: Build and publish Python 🐍 distributions 📦 to PyPI and TestPyPI
