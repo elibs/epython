@@ -1,6 +1,6 @@
 [project]
 name = "epython"
-version = 2021.1043
+version = 2021.1044
 description = "Helper library for QA"
 authors = [
     "Ray Gomez <codenomad@gmail.com>"
@@ -27,8 +27,8 @@ requires = [
 build-backend = "setuptools.build_meta"
 
 [tool.bumpver]
-current_version = 2021.1043
-version_pattern = "YYYY.BUILD[-TAG]"
+current_version = "2021.1044"
+version_pattern = "YYYY.BUILD"
 commit_message = "bump version {old_version} -> {new_version}"
 commit = true
 tag = true
@@ -36,7 +36,7 @@ push = true
 
 [tool.bumpver.file_patterns]
 "pyproject.toml" = [
-    'current_version = {version}',
+    'current_version = "{version}"',
     'version = {version}',
 ]
 "setup.cfg" = [
