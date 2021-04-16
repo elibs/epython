@@ -1,6 +1,6 @@
 [project]
 name = "elibs-epython"
-version = 2021.1044
+version = 2021.1045
 description = "Helper library for QA"
 authors = [
     "Ray Gomez <codenomad@gmail.com>"
@@ -27,7 +27,7 @@ requires = [
 build-backend = "setuptools.build_meta"
 
 [tool.bumpver]
-current_version = "2021.1044"
+current_version = "2021.1045"
 version_pattern = "YYYY.BUILD"
 commit_message = "bump version {old_version} -> {new_version}"
 commit = true
