@@ -1,9 +1,9 @@
 name: Publish to Pypi
 
 on:
-  push:
+  pull_request:
     branches:
-      - master
+      - devel
   workflow_dispatch:
 
 jobs:
