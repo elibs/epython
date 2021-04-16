@@ -33,10 +33,11 @@ jobs:
           git config --global user.name "Autobot"
           bumpver update
 
-      - name: Commit & Push changes
-        uses: actions-js/push@master
+      - name: Push changes
+        uses: ad-m/github-push-action@master
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: ${{ github.ref }}
 
   build-n-publish:
     name: Build and publish Python 🐍 distributions 📦 to PyPI and TestPyPI
