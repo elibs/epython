@@ -31,8 +31,12 @@ jobs:
           set -xe
           git config --global user.email "autobot@users.noreply.github.com"
           git config --global user.name "Autobot"
-          git remote set-url origin https://x-access-token:${{ secrets.EPYTHON_PAT }}@github.com/${{ github.repository }}
           bumpver update
+
+      - name: Commit & Push changes
+        uses: actions-js/push@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
 
   build-n-publish:
     name: Build and publish Python 🐍 distributions 📦 to PyPI and TestPyPI
