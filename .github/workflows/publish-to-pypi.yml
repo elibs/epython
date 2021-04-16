@@ -10,6 +10,7 @@ on:
 jobs:
 
   bump-version:
+
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -39,6 +40,7 @@ jobs:
           bumpver update
 
   publish:
+
     name: Build and publish Python 🐍 distributions 📦 to PyPI and TestPyPI
     runs-on: ubuntu-20.04
     needs: bump-version
