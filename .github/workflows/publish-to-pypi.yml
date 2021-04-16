@@ -3,7 +3,7 @@ name: Publish to Pypi
 on:
   push:
     branches:
-      - master
+      - devel
   workflow_dispatch:
 
 jobs:
@@ -18,6 +18,8 @@ jobs:
       - uses: actions/setup-python@v2
         with:
           python-version: ${{ matrix.python-version }}
+          persist-credentials: false
+          fetch-depth: 0
 
       - name: Install dependencies
         run: |
@@ -28,9 +30,6 @@ jobs:
 
       - name: Bump Version
         run: |
-          set -xe
-          git config --global user.email "autobot@users.noreply.github.com"
-          git config --global user.name "Autobot"
           bumpver update
 
       - name: Commit & Push changes
@@ -38,29 +37,29 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
 
-  build-n-publish:
-    name: Build and publish Python 🐍 distributions 📦 to PyPI and TestPyPI
-    runs-on: ubuntu-20.04
-    needs: bump-version
-    steps:
-    - uses: actions/checkout@master
-    - name: Set up Python 3.9
-      uses: actions/setup-python@v1
-      with:
-        python-version: 3.9
-    - name: Install pypa/build
-      run: >-
-        python -m
-        pip install
-        build
-        --user
-    - name: Build a binary wheel and a source tarball
-      run: >-
-        python -m
-        build
-        --sdist
-        --wheel
-        --outdir dist/
+#  build-n-publish:
+#    name: Build and publish Python 🐍 distributions 📦 to PyPI and TestPyPI
+#    runs-on: ubuntu-20.04
+#    needs: bump-version
+#    steps:
+#    - uses: actions/checkout@master
+#    - name: Set up Python 3.9
+#      uses: actions/setup-python@v1
+#      with:
+#        python-version: 3.9
+#    - name: Install pypa/build
+#      run: >-
+#        python -m
+#        pip install
+#        build
+#        --user
+#    - name: Build a binary wheel and a source tarball
+#      run: >-
+#        python -m
+#        build
+#        --sdist
+#        --wheel
+#        --outdir dist/
         .
 #    - name: Publish distribution 📦 to PyPI
 #      uses: pypa/gh-action-pypi-publish@master
