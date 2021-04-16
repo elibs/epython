@@ -1,6 +1,6 @@
 [project]
 name = "epython"
-version = "2021.1043"
+version = 2021.1043
 description = "Helper library for QA"
 authors = [
     "Ray Gomez <codenomad@gmail.com>"
