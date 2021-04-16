@@ -23,10 +23,6 @@ jobs:
           python -m pip install --upgrade pip
           python -m pip install -r requirements.txt
 
-      - name: Version Bump
-        run: |
-          bumpver update
-
       - name: Running pyLint
         run: |
           PYTHONPATH=./src/ pylint ./src/epython
@@ -40,3 +36,30 @@ jobs:
         with:
           name: pytest-results-${{ matrix.python-version }}
           path: junit/test-results.xml
+
+  bump-version:
+
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [3.9]
+
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install dependencies
+        run: |
+          set -xe
+          python -VV
+          python -m pip install --upgrade pip
+          python -m pip install -r requirements.txt
+
+      - name: Bump Version
+        run: |
+          set -xe
+          git config --global user.email "codenomad@gmail.com"
+          git config --global user.name "Autobot"
+          bumpver update
