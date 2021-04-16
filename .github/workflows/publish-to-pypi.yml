@@ -2,6 +2,7 @@ name: Publish to Pypi
 
 on:
   pull_request:
+    types: [closed]
     branches:
       - master
   workflow_dispatch:
@@ -10,6 +11,7 @@ jobs:
 
   bump-version:
     runs-on: ubuntu-latest
+    needs: build
     strategy:
       matrix:
         python-version: [3.9]
@@ -36,7 +38,6 @@ jobs:
           git config --global user.email "autobot@users.noreply.github.com"
           git config --global user.name "Autobot"
           bumpver update
-          git push
 
   publish:
     name: Build and publish Python 🐍 distributions 📦 to PyPI and TestPyPI
